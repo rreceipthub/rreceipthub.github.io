@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ReceiptHub – Modern Receipt Generator for Online Sellers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="ReceiptHub — the modern way to create clear, professional receipts for your real online sales. Generate documents you can share with customers or store for your records in seconds."
+  />
+
+  <!-- Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- SellAuth -->
+  <script src="https://sellauth.com/assets/js/sellauth-embed-2.js" async></script>
+
+  <style>
+    :root {
+      --bg-start: #020617;
+      --bg-end: #020814;
+      --accent: #22ff88;
+      --accent-soft: rgba(34, 255, 136, 0.08);
+      --accent-strong: #bbf7d0;
+      --accent-warn: #f97316;
+      --text-main: #e5fdf1;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.3);
+      --card-bg: rgba(15, 23, 42, 0.9);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
+      --shadow-strong: 0 28px 70px rgba(0, 0, 0, 0.9);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      color: var(--text-main);
+      background: radial-gradient(circle at top, #022c22 0, #020617 32%, #020617 100%);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 16px 16px 80px;
+    }
+
+    .max-w {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* Top-level layout */
+
+    .page-shell {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .page-shell::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(34, 255, 136, 0.06), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(8, 47, 73, 0.9), transparent 55%);
+      opacity: 0.9;
+      z-index: -1;
+    }
+
+    /* Header */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(
+        to bottom,
+        rgba(2, 6, 23, 0.98),
+        rgba(2, 6, 23, 0.9),
+        transparent
+      );
+      border-bottom: 1px solid rgba(15, 118, 110, 0.3);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 20% 0, var(--accent), #0f172a 70%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 30px rgba(22, 163, 74, 0.7);
+    }
+
+    .logo-badge span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #022c22;
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 0.98rem;
+    }
+
+    .logo-text-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-link {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+      border-color: rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7));
+    }
+
+    .nav-cta {
+      border-radius: var(--radius-pill);
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid rgba(45, 212, 191, 0.8);
+      background:
+        radial-gradient(circle at top, rgba(34, 255, 136, 0.95), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 16px 40px rgba(16, 185, 129, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #022c22;
+    }
+
+    .nav-cta span {
+      font-size: 0.9em;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 55px rgba(16, 185, 129, 0.75);
+    }
+
+    /* Hero */
+
+    .hero {
+      padding-top: 24px;
+      padding-bottom: 36px;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 26px;
+    }
+
+    @media (min-width: 880px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+        align-items: center;
+        gap: 40px;
+      }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(52, 211, 153, 0.6);
+      background: rgba(6, 78, 59, 0.6);
+      color: var(--accent-strong);
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      line-height: 1.15;
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 2.6rem;
+      }
+    }
+
+    .hero-title .highlight {
+      color: var(--accent-strong);
+      background: linear-gradient(to right, #bbf7d0, #4ade80, #a7f3d0);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      margin: 0 0 18px;
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      max-width: 440px;
+    }
+
+    .hero-subtitle strong {
+      color: var(--accent-strong);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-primary {
+      border-radius: var(--radius-pill);
+      padding: 9px 18px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      border: 1px solid rgba(34, 255, 136, 0.9);
+      background:
+        radial-gradient(circle at top, rgba(34, 255, 136, 0.95), rgba(6, 78, 59, 0.98));
+      box-shadow: var(--shadow-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #022c22;
+    }
+
+    .btn-primary span {
+      display: inline-block;
+      transform: translateY(1px);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .btn-ghost {
+      border-radius: var(--radius-pill);
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-main);
+      border-color: rgba(209, 213, 219, 0.7);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .hero-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, var(--accent), #22c55e);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Hero preview card */
+
+    .hero-preview-card {
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background:
+        radial-gradient(circle at top left, rgba(34, 255, 136, 0.08), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 1), #020617);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-size: 0.78rem;
+    }
+
+    .hero-preview-title {
+      font-weight: 600;
+    }
+
+    .hero-preview-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 255, 136, 0.5);
+      background: rgba(5, 46, 22, 0.95);
+      font-size: 0.75rem;
+      color: var(--accent-strong);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-preview-pill svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .hero-preview-body {
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.97);
+      padding: 14px 14px 12px;
+      font-size: 0.75rem;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .receipt-row label {
+      color: var(--text-muted);
+    }
+
+    .receipt-row span {
+      font-weight: 500;
+    }
+
+    .receipt-total {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(75, 85, 99, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .receipt-total span:last-child {
+      font-weight: 600;
+      color: var(--accent-strong);
+    }
+
+    .receipt-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .receipt-badges span {
+      font-size: 0.7rem;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+    }
+
+    .hero-preview-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .hero-preview-footer strong {
+      color: var(--accent-strong);
+    }
+
+    /* Sections */
+
+    section {
+      padding: 30px 0;
+    }
+
+    .section-header {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+      max-width: 600px;
+    }
+
+    /* Metrics */
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.45), #020617);
+      padding: 14px 14px 12px;
+      font-size: 0.82rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .metric-text {
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Features */
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .feature-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(34, 197, 94, 0.32);
+      background: radial-gradient(circle at top left, rgba(21, 128, 61, 0.9), #020617);
+      padding: 14px 14px 13px;
+      font-size: 0.84rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(163, 230, 53, 0.8);
+      background: rgba(21, 128, 61, 0.95);
+      color: #ecfdf5;
+      margin-bottom: 6px;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+
+    .feature-text {
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .feature-footnote {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: rgba(209, 213, 219, 0.9);
+    }
+
+    /* How it works */
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .step-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 14px 14px 12px;
+      background: rgba(15, 23, 42, 0.96);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.84rem;
+    }
+
+    .step-number {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      color: var(--accent-strong);
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-text {
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Testimonials */
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .testimonial-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.7), #020617);
+      padding: 14px 14px 12px;
+      font-size: 0.82rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+    }
+
+    .testimonial-tag {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .testimonial-text {
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+
+    .stars {
+      font-size: 0.78rem;
+      color: #facc15;
+    }
+
+    /* Pricing */
+
+    .pricing-section {
+      padding-top: 24px;
+      padding-bottom: 28px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .price-card {
+      border-radius: 22px;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      background: radial-gradient(circle at top left, rgba(22, 163, 74, 0.95), #020617);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-strong);
+      position: relative;
+    }
+
+    .price-card.secondary {
+      border-color: rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.7), #020617);
+    }
+
+    .price-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.75rem;
+      color: var(--accent-strong);
+      margin-bottom: 6px;
+    }
+
+    .price-plan {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .price-main {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .price-suffix {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .price-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .price-list {
+      list-style: none;
+      margin: 0 0 14px;
+      padding: 0;
+      font-size: 0.8rem;
+      color: var(--text-main);
+    }
+
+    .price-list li {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .price-list li span:first-child {
+      color: var(--accent-strong);
+    }
+
+    .sellauth-button {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(34, 255, 136, 0.95);
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      background:
+        radial-gradient(circle at top left, rgba(34, 255, 136, 0.9), rgba(6, 78, 59, 1));
+      color: #022c22;
+      box-shadow: 0 16px 40px rgba(16, 185, 129, 0.6);
+    }
+
+    .sellauth-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 55px rgba(16, 185, 129, 0.9);
+    }
+
+    .sellauth-button[data-checking-out] {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .sellauth-button svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Compliance */
+
+    .compliance-section {
+      padding: 30px 0 24px;
+      border-top: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top, rgba(15, 118, 110, 0.3), transparent 70%);
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .compliance-card {
+      padding: 14px 14px 12px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: radial-gradient(circle at top left, rgba(5, 46, 22, 0.96), #020617);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.82rem;
+    }
+
+    .compliance-card h3 {
+      margin: 0 0 4px;
+      font-size: 0.9rem;
+    }
+
+    .compliance-card p {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* FAQ */
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 800px) {
+      .faq-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .faq-list {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.96);
+      padding: 12px 12px 10px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .faq-item + .faq-item {
+      border-top: 1px solid rgba(55, 65, 81, 0.85);
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+
+    .faq-question {
+      font-size: 0.88rem;
+      margin: 0 0 4px;
+    }
+
+    .faq-answer {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* CTA */
+
+    .cta-section {
+      padding: 30px 0 40px;
+    }
+
+    .cta-box {
+      border-radius: var(--radius-xl);
+      padding: 20px 18px 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top center, rgba(34, 255, 136, 0.18), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.7), #020617);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .cta-title {
+      font-size: 1.2rem;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-text {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* Footer */
+
+    footer {
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 1), #020617);
+      padding: 18px 16px 20px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      opacity: 0.9;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--accent-strong);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-shell">
+    <header>
+      <div class="nav-inner">
+        <a href="#" class="logo">
+          <div class="logo-badge">
+            <span>R</span>
+          </div>
+          <div>
+            <div class="logo-text-main">ReceiptHub</div>
+            <div class="logo-text-sub">Receipts for real online sales</div>
+          </div>
+        </a>
+
+        <nav class="nav-actions">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#pricing" class="nav-link">Pricing</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <a href="#terms" class="nav-cta">
+            Get access
+            <span>→</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="max-w hero-grid">
+          <div>
+            <div class="hero-eyebrow">
+              <span>New</span>
+              <span>Modern receipt generator for online sellers</span>
+            </div>
+
+            <h1 class="hero-title">
+              The modern
+              <span class="highlight">receipt generator</span>
+              for online sellers and small businesses.
+            </h1>
+
+            <p class="hero-subtitle">
+              Stop losing time editing documents manually. With <strong>ReceiptHub</strong>, you
+              create clear, professional receipts based on your real sales — ready to share with
+              your customers or store in your records.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#pricing" class="btn-primary">
+                Get instant access
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="#features" class="btn-ghost">
+                See how it works
+              </a>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-tag">
+                <span class="hero-tag-dot"></span>
+                <span>Built for legitimate reselling & e-commerce</span>
+              </div>
+              <div class="hero-tag">
+                <span>PDF export</span>
+                <span>•</span>
+                <span>Unlimited templates</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="hero-preview-card">
+              <div class="hero-preview-header">
+                <div class="hero-preview-title">Sample receipt preview</div>
+                <div class="hero-preview-pill">
+                  <!-- Check icon -->
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 12.75 9.5 17 19 7.5"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Real order data only
+                </div>
+              </div>
+
+              <div class="hero-preview-body">
+                <div class="receipt-row">
+                  <label>Customer</label>
+                  <span>Jane Doe</span>
+                </div>
+                <div class="receipt-row">
+                  <label>Order ID</label>
+                  <span>#RH-28493</span>
+                </div>
+                <div class="receipt-row">
+                  <label>Date</label>
+                  <span>2025-11-30</span>
+                </div>
+                <div class="receipt-row">
+                  <label>Item</label>
+                  <span>Premium sneakers – size 42</span>
+                </div>
+                <div class="receipt-row">
+                  <label>Qty</label>
+                  <span>1</span>
+                </div>
+                <div class="receipt-row">
+                  <label>Subtotal</label>
+                  <span>€129.00</span>
+                </div>
+
+                <div class="receipt-total">
+                  <span>Total paid</span>
+                  <span>€139.49</span>
+                </div>
+
+                <div class="receipt-badges">
+                  <span>For your records</span>
+                  <span>Downloadable PDF</span>
+                  <span>Easy to share</span>
+                </div>
+              </div>
+
+              <div class="hero-preview-footer">
+                <span>Generated in <strong>2.3 seconds</strong></span>
+                <span>Template: “Clean resale receipt”</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Metrics -->
+      <section>
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">Why ReceiptHub</div>
+            <h2 class="section-title">Built for serious online sellers</h2>
+            <p class="section-description">
+              Whether you sell part-time or full-time, you need receipts that are simple to create,
+              easy to understand, and safe to use with real customers.
+            </p>
+          </div>
+
+          <div class="metrics-grid">
+            <article class="metric-card">
+              <div class="metric-title">Clear, professional layouts</div>
+              <div class="metric-text">
+                Easy-to-read receipts with consistent formatting – no ugly fonts or misaligned rows.
+                Every template is designed for clarity and real-world use.
+              </div>
+            </article>
+
+            <article class="metric-card">
+              <div class="metric-title">Made for legitimate orders</div>
+              <div class="metric-text">
+                ReceiptHub is designed to help you document real sales. Every field (items, prices,
+                dates, customer data) is under your control so your records stay accurate.
+              </div>
+            </article>
+
+            <article class="metric-card">
+              <div class="metric-title">Faster, safer workflow</div>
+              <div class="metric-text">
+                Stop editing Word templates manually. Generate consistent receipts in seconds, keep
+                clean records, and reduce disputes caused by confusing documentation.
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features">
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">Features</div>
+            <h2 class="section-title">Everything you need to document your sales</h2>
+            <p class="section-description">
+              ReceiptHub gives you all the tools to create accurate, clean and well-structured
+              receipts in just a few clicks – without touching a single design tool.
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-tag">
+                <span>01</span>
+                <span>Smart templates</span>
+              </div>
+              <h3 class="feature-title">Templates for online reselling</h3>
+              <p class="feature-text">
+                Choose from layouts designed for typical reselling scenarios: single-item sales,
+                bundles, and repeat customers. You decide what to show and what to hide.
+              </p>
+              <p class="feature-footnote">
+                Only use templates to represent real transactions – ReceiptHub is not for fake
+                orders or made-up numbers.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-tag">
+                <span>02</span>
+                <span>Fast editing</span>
+              </div>
+              <h3 class="feature-title">Fill once, reuse forever</h3>
+              <p class="feature-text">
+                Save your seller details, typical line items, and notes. Create a new receipt by
+                changing just what matters: buyer info, date, and actual amounts paid.
+              </p>
+              <p class="feature-footnote">
+                Perfect if you want to keep your accounting organized without hiring a designer or
+                building a custom tool.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-tag">
+                <span>03</span>
+                <span>Export & archive</span>
+              </div>
+              <h3 class="feature-title">Share and store with confidence</h3>
+              <p class="feature-text">
+                Export your receipts as PDF, send them to your customer, or store them in your
+                archive. Keep a transparent, time-stamped history of what you actually sold.
+              </p>
+              <p class="feature-footnote">
+                Ideal for bookkeeping, audits, and customer support when someone asks for proof of a
+                genuine purchase.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section>
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">How it works</div>
+            <h2 class="section-title">From sale to receipt in under a minute</h2>
+            <p class="section-description">
+              ReceiptHub fits into the way you already sell. You log a real order, customize the
+              details, and generate a professional receipt your buyer can trust.
+            </p>
+          </div>
+
+          <div class="steps-grid">
+            <article class="step-card">
+              <div class="step-number">1</div>
+              <h3 class="step-title">Log your real order</h3>
+              <p class="step-text">
+                Start from a blank template or a saved profile. Enter the real customer name, order
+                ID, items, prices, and payment date from your sale.
+              </p>
+            </article>
+
+            <article class="step-card">
+              <div class="step-number">2</div>
+              <h3 class="step-title">Customize the layout</h3>
+              <p class="step-text">
+                Adjust fields, add your logo, and choose how much detail you want to show. The
+                layout stays clean and easy to read, even for long orders.
+              </p>
+            </article>
+
+            <article class="step-card">
+              <div class="step-number">3</div>
+              <h3 class="step-title">Export & share</h3>
+              <p class="step-text">
+                Download a high-quality PDF, send it to your buyer, or save it to your archive.
+                You’ll always have a clear record if someone asks for a copy later.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section>
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">Feedback</div>
+            <h2 class="section-title">Loved by resellers who take records seriously</h2>
+            <p class="section-description">
+              Real feedback from people using ReceiptHub daily to support their online reselling
+              business, keep paperwork under control, and stay transparent with buyers.
+            </p>
+          </div>
+
+          <div class="testimonials-grid">
+            <article class="testimonial-card">
+              <div class="testimonial-header">
+                <div>
+                  <div class="testimonial-name">Alex</div>
+                  <div class="testimonial-tag">Sneaker reseller</div>
+                </div>
+                <div class="stars">★★★★★</div>
+              </div>
+              <p class="testimonial-text">
+                I used to patch receipts in Google Docs and it always looked messy. With ReceiptHub,
+                my customers get a clean document with all the real info they need – order ID,
+                item, amount – in under a minute.
+              </p>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-header">
+                <div>
+                  <div class="testimonial-name">Marta</div>
+                  <div class="testimonial-tag">Clothing & accessories</div>
+                </div>
+                <div class="stars">★★★★★</div>
+              </div>
+              <p class="testimonial-text">
+                For me it’s all about organization. Every sale gets a receipt, and I can find
+                everything later when I do my numbers. It feels much more professional – and also
+                safer if a buyer needs documentation.
+              </p>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-header">
+                <div>
+                  <div class="testimonial-name">Tom</div>
+                  <div class="testimonial-tag">Part-time electronics seller</div>
+                </div>
+                <div class="stars">★★★★★</div>
+              </div>
+              <p class="testimonial-text">
+                Really easy to use. I log the genuine order details and I’m done. No more fighting
+                with templates or weird fonts, and it keeps all my receipts consistent in case I’m
+                ever asked to show my records.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing -->
+      <section id="pricing" class="pricing-section">
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">Pricing</div>
+            <h2 class="section-title">Simple plans for real resellers</h2>
+            <p class="section-description">
+              Choose the plan that fits how often you sell. Both plans are for genuine online sales
+              only – ReceiptHub is not intended for fake orders or misleading documents.
+            </p>
+          </div>
+
+          <div class="pricing-grid">
+            <article class="price-card secondary">
+              <div class="price-pill">
+                Starter
+              </div>
+              <div class="price-plan">
+                <span class="price-main">€9</span>
+                <span class="price-suffix">per day</span>
+              </div>
+              <p class="price-note">
+                Ideal if you want to test the workflow or only need detailed receipts occasionally.
+              </p>
+              <ul class="price-list">
+                <li>
+                  <span>•</span>
+                  <span>Full access to all templates during the active day</span>
+                </li>
+                <li>
+                  <span>•</span>
+                  <span>Unlimited receipts for real orders and customers</span>
+                </li>
+                <li>
+                  <span>•</span>
+                  <span>PDF export and ability to store your receipts</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                class="sellauth-button"
+                onclick="window.sellAuthEmbed && window.sellAuthEmbed.checkout(this, {
+                  cart: [{ productId: 289768, variantId: 389735, quantity: 1 }],
+                  shopId: 131587,
+                  modal: true
+                })"
+              >
+                <span>Buy now – Day pass</span>
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 12h14M13 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </article>
+
+            <article class="price-card">
+              <div class="price-pill">
+                Most popular
+              </div>
+              <div class="price-plan">
+                <span class="price-main">€49</span>
+                <span class="price-suffix">lifetime access</span>
+              </div>
+              <p class="price-note">
+                One-time payment, lifetime access. Perfect if you want a permanent receipt system
+                for your selling activity.
+              </p>
+              <ul class="price-list">
+                <li>
+                  <span>•</span>
+                  <span>Lifetime access to all current and future templates</span>
+                </li>
+                <li>
+                  <span>•</span>
+                  <span>Unlimited receipts for real orders – no monthly limits</span>
+                </li>
+                <li>
+                  <span>•</span>
+                  <span>Priority support if you have questions about your setup</span>
+                </li>
+                <li>
+                  <span>•</span>
+                  <span>Designed to help you keep clean, transparent records</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                class="sellauth-button"
+                onclick="window.sellAuthEmbed && window.sellAuthEmbed.checkout(this, {
+                  cart: [{ productId: 289768, variantId: 389735, quantity: 1 }],
+                  shopId: 131587,
+                  modal: true
+                })"
+              >
+                <span>Buy now – Lifetime</span>
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 12h14M13 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Compliance / Responsible use -->
+      <section class="compliance-section">
+        <div class="max-w">
+          <div class="section-header">
+            <div class="section-badge">Responsible use</div>
+            <h2 class="section-title">Use ReceiptHub responsibly</h2>
+            <p class="section-description">
+              ReceiptHub is built to help you document genuine business transactions – not to
+              impersonate other companies, create fake purchase histories, or mislead anyone.
+            </p>
+          </div>
+
+          <div class="compliance-grid">
+            <article class="compliance-card">
+              <h3>Not official store receipts</h3>
+              <p>
+                Documents generated with ReceiptHub are created by you for your own business
+                records. They are not official receipts issued by third-party brands, payment
+                providers or marketplaces.
+              </p>
+            </article>
+            <article class="compliance-card">
+              <h3>No fraud or dispute abuse</h3>
+              <p>
+                Using ReceiptHub for any kind of fraud, forgery, or dispute manipulation (for
+                example to support false claims or chargebacks) is strictly prohibited and may lead
+                to termination of your access.
+              </p>
+            </article>
+            <article class="compliance-card">
+              <h3>Respect laws & platform rules</h3>
+              <p>
+                You are responsible for how you use the documents you generate. Always follow the
+                law in your country and the rules of the platforms and payment providers you use.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="max-w">
+          <div class="faq-grid">
+            <div class="section-header">
+              <div class="section-badge">FAQ</div>
+              <h2 class="section-title">Common questions</h2>
+              <p class="section-description">
+                A few quick answers about what ReceiptHub is, how it works, and how it should be
+                used.
+              </p>
+            </div>
+
+            <div class="faq-list">
+              <div class="faq-item">
+                <h3 class="faq-question">What is ReceiptHub exactly?</h3>
+                <div class="faq-answer">
+                  ReceiptHub helps you generate clear, professional receipts based on your own sales
+                  data. You choose a template, fill in the real details of your order, and get a
+                  clean document ready to share with your customer or save for your records.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3 class="faq-question">Is this for fake or “test” receipts?</h3>
+                <div class="faq-answer">
+                  No. ReceiptHub is only for documenting genuine transactions. You must not use it
+                  to fabricate purchases, simulate payments that did not happen, or deceive buyers,
+                  banks, marketplaces, or payment providers.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3 class="faq-question">Can I copy another brand’s official receipt style?</h3>
+                <div class="faq-answer">
+                  ReceiptHub offers generic, clean layouts designed for resellers and small
+                  businesses. You are responsible for respecting trademarks, intellectual property,
+                  and any rules from other companies. Do not claim that your receipts are official
+                  documents from third-party brands.
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <h3 class="faq-question">How long does access take after purchase?</h3>
+                <div class="faq-answer">
+                  Access is delivered almost instantly after payment is confirmed. If anything goes
+                  wrong, you can contact support using the details provided in your order email.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="max-w">
+          <div class="cta-box">
+            <h2 class="cta-title">Ready to create clean, reliable receipts?</h2>
+            <p class="cta-text">
+              Join online sellers and small businesses who already use ReceiptHub to save time,
+              stay organized, and keep their records in order. Choose your plan, get instant access,
+              and start generating receipts within minutes.
+            </p>
+            <div class="cta-actions">
+              <a href="#pricing" class="btn-primary">
+                Choose your plan
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="#faq" class="btn-ghost">
+                Read FAQ
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="terms">
+      <div class="footer-inner">
+        <div>
+          © <span id="year"></span> ReceiptHub. All rights reserved.
+        </div>
+        <div class="footer-links">
+          <span>
+            ReceiptHub does not provide legal or tax advice. You are responsible for complying with
+            all applicable laws and payment provider terms.
+          </span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
