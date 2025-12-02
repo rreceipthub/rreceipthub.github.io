@@ -871,6 +871,94 @@
       justify-content: center;
     }
 
+    /* Contact */
+
+    .contact-section {
+      padding: 0 0 40px;
+    }
+
+    .contact-card {
+      border-radius: var(--radius-xl);
+      padding: 20px 18px 18px;
+      background:
+        radial-gradient(circle at top left, rgba(34, 255, 136, 0.16), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 1), #020617);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-title {
+      font-size: 1.1rem;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-text {
+      margin: 0 0 14px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 12px;
+      max-width: 520px;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.8rem;
+    }
+
+    .contact-row label {
+      color: var(--text-main);
+    }
+
+    .contact-input,
+    .contact-textarea {
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .contact-input:focus,
+    .contact-textarea:focus {
+      border-color: rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.6);
+    }
+
+    .contact-textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .contact-submit {
+      margin-top: 4px;
+      align-self: flex-start;
+      border-radius: var(--radius-pill);
+      padding: 8px 18px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      border: 1px solid rgba(34, 255, 136, 0.9);
+      background:
+        radial-gradient(circle at top, rgba(34, 255, 136, 0.95), rgba(6, 78, 59, 0.98));
+      color: #022c22;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-strong);
+    }
+
     /* Footer */
 
     footer {
@@ -1486,6 +1574,57 @@
           </div>
         </div>
       </section>
+
+      <!-- Contact -->
+      <section id="contact" class="contact-section">
+        <div class="max-w">
+          <div class="contact-card">
+            <h2 class="contact-title">Contact</h2>
+            <p class="contact-text">
+              Want to partner up or need help? Send us a message using the form below.
+            </p>
+            <form
+              class="contact-form"
+              action="mailto:luci@receipthub.me"
+              method="post"
+              enctype="text/plain"
+            >
+              <div class="contact-row">
+                <label for="contact-name">Name</label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  class="contact-input"
+                  required
+                />
+              </div>
+              <div class="contact-row">
+                <label for="contact-email">Email</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  class="contact-input"
+                  required
+                />
+              </div>
+              <div class="contact-row">
+                <label for="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  class="contact-textarea"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="contact-submit">
+                Send message
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->
@@ -1499,7 +1638,8 @@
             ReceiptHub does not provide legal or tax advice. You are responsible for complying with
             all applicable laws and payment provider terms.
 
-            Want to partner up or need help? Contact us at: luci@receipthub.me
+            Want to partner up or need help? Contact us at:
+            <a href="mailto:luci@receipthub.me">luci@receipthub.me</a>
           </span>
         </div>
       </div>
